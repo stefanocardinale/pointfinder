@@ -15,7 +15,7 @@ sample = config["Sample"]
 sample_file_name = sample
 db_sample = datahandling.load_sample(sample_file_name)
 provided_species = db_sample["properties"].get("provided_species","ERROR")
-pointfinder_db_names = {'Clostridioides difficile': 'Cdifficile','Salmonella enterica': 'Salmonella'}
+pointfinder_db_names = {'Salmonella enterica': 'salmonella','Campylobacter jejuni': 'campylobacter','Escherichia coli': 'escherichia_coli'} #with this I provide a specific new value used after in the script to look at the specific organism in the database (resources)
 
 component_file_name = "../components/" + component + ".yaml"
 if not os.path.isfile(component_file_name):
@@ -108,15 +108,15 @@ rule pointfinder:
     params:
         sample_name = db_sample.get("name","ERROR"),
         provided_species = pointfinder_db_names.get(provided_species,"ERROR"),
-        outfolder = rules.setup.params.folder + "/results",
+        outfolder = rules.setup.params.folder,
         db = os.path.join(os.path.dirname(workflow.snakefile), "resources/pointfinder_db")
 #        adapters = os.path.join(os.path.dirname(workflow.snakefile), db_component["adapters_fasta"])
     shell:
         os.path.join(os.path.dirname(workflow.snakefile), "scripts/pointfinder.py") + " --id {params.sample_name} --db {params.db} --i {input.contigs} --o {params.outfolder} --organism {params.provided_species}"
 
 
-rule_name = "datadump_kma_pointmutations"
-rule datadump_kma_pointmutations:
+rule_name = "datadump_pointfinder"
+rule datadump_pointfinder:
     # Static
     message:
         "Running step:" + rule_name
@@ -136,6 +136,6 @@ rule datadump_kma_pointmutations:
         summary = touch(rules.all.input)
     params:
         sample = db_sample.get("name", "ERROR") + "__" + component + ".yaml",
-        folder = rules.setup.params.folder + "/results",
+        folder = rules.setup.params.folder,
     script:
         os.path.join(os.path.dirname(workflow.snakefile), "datadump.py")

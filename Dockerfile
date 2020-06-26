@@ -2,10 +2,10 @@
 FROM ssidk/bifrost-base:2.0.5
 
 #- These are variables that are used at build-time--------------------------------------------------
-ARG version="1.0.0"
+ARG version="1.0"
 ARG last_updated="21/06/2021"
 ARG name="pointfinder"
-ARG full_name="bifrost-${name}"
+ARG full_name="${name}"
 
 #- label instructions are key-value pairs that add metadata to the image----------------------------
 LABEL \
@@ -28,7 +28,7 @@ RUN cd /bifrost_resources && \
 
 #- Source code:start -------------------------------------------------------------------------------
 RUN cd /bifrost && \
-    git clone --branch ${version} https://github.com/ssi-dk/${full_name}.git ${name};
+    git clone --branch ${version} https://github.com/stefanocardinale/${full_name}.git ${name};
 #- Source code:end ---------------------------------------------------------------------------------
 
 #- Set up entry point:start ------------------------------------------------------------------------

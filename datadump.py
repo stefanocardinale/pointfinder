@@ -11,9 +11,9 @@ global GLOBAL_BIN_VALUES
 GLOBAL_BIN_VALUES = [1, 10, 25]
 
 def extract_tsv(datadump_dict, folder, relative_path):
-    relative_path_key = relative_path.replace(".", "_")
+    #relative_path_key = relative_path.replace(".", "_")
     if os.path.isfile(os.path.join(folder, relative_path)):
-        datadump_dict["results"][relative_path_key] = {}
+        datadump_dict["results"][relative_path] = {}
         try:
             with open(os.path.join(folder, relative_path), "r") as tsv_file:
                 values = []
@@ -28,17 +28,12 @@ def extract_tsv(datadump_dict, folder, relative_path):
         except Exception as e:
             sys.stderr.write(relative_path, e)
             sys.stderr.write(datadump_dict)
-            datadump_dict["results"][relative_path_key]["status"] = "datadumper error"
-        datadump_dict["results"][relative_path_key]["values"] = values
+            datadump_dict["results"][relative_path]["status"] = "datadumper error"
+        datadump_dict["results"][relative_path]["values"] = values
+        datadump_dict["summary"][relative_path] = values
+        
     return datadump_dict
 
-def extract_summary(data_dict, file_path):
-    buffer = datahandling.read_buffer(file_path)
-    lines = buffer.split("\n")
-    data_dict["summary"]["AMclasses"] = lines[0].split("\t")
-    data_dict["summary"]["Genes"] = lines[1].split("\t")
-    data_dict["summary"]["Point_mutations"] = lines[2].split("\t")
-    return data_dict
 
 def script__datadump_kma_pointmutations(folder, sample):
     folder = str(folder)

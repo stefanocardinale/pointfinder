@@ -22,7 +22,7 @@ requirements:
 #this requirement looks for the specific sample component with name 'assemblatron' and the key 'status' 
 #checking the provided value
   component: 
-    assemblatron:
+    qcquickie:
       status: Success
   #this requirement looks directly at the sample object 'reads' dictionary at R1 and R2 keys.
   #It only checks whether there are there (initialized), it doesn't care about their value
@@ -31,7 +31,7 @@ requirements:
       R1:
       R2:
     properties:
-      provided_species: ['Escherichia coli', 'Salmonella enterica']
+      provided_species: ['Escherichia coli', 'Salmonella enterica','Campylobacter jejuni']
 #-DB Value changes (excluding component output)-----------------------------------------------------
 # None
 #---------------------------------------------------------------------------------------------------

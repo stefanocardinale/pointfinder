@@ -28,7 +28,7 @@ def run_pointfinder(fasta, seqid, db, outdir, organism):
 
 def find_contigs(seqid, fasta):
 	if fasta is None:
-		fasta = glob.glob(seqid + "/qcquickie/contigs.fasta")[0]
+		fasta = glob.glob(seqid + "*/contigs.fasta")[0]
 
 	return fasta
 
@@ -37,7 +37,7 @@ def pointfinder_res_search(organism, seqid, db, outdir, fasta):
 	run_pointfinder(fasta, seqid, db, outdir, organism)
 
 if __name__ == "__main__":
-    org_names = ['Escherichia', 'Salmonella']
+    org_names = ['salmonella','campylobacter','escherichia_coli']
 
     args = parse_args(org_names)
     pointfinder_res_search(args.organism, args.id, args.db, args.o, args.i)
