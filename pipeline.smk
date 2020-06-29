@@ -1,38 +1,14 @@
+#- Templated section: start ------------------------------------------------------------------------
 import os
-import sys
-import traceback
-import shutil
 from bifrostlib import datahandling
-from bifrostlib import check_requirements
 
-component = "pointfinder"  # Depends on component name, should be same as folder
 
-configfile: "../config.yaml"  # Relative to run directory
-global_threads = config["threads"]
-global_memory_in_GB = config["memory"]
-sample = config["Sample"]
+os.umask(0o2)
+bifrost_sampleComponentObj = datahandling.SampleComponentObj(config["sample_id"], config["component_id"])
+sample_name, component_name, dockerfile, options, bifrost_resources = bifrost_sampleComponentObj.load()
+bifrost_sampleComponentObj.started()
 
-sample_file_name = sample
-db_sample = datahandling.load_sample(sample_file_name)
-provided_species = db_sample["properties"].get("provided_species","ERROR")
 pointfinder_db_names = {'Salmonella enterica': 'salmonella','Campylobacter jejuni': 'campylobacter','Escherichia coli': 'escherichia_coli'} #with this I provide a specific new value used after in the script to look at the specific organism in the database (resources)
-
-component_file_name = "../components/" + component + ".yaml"
-if not os.path.isfile(component_file_name):
-    shutil.copyfile(os.path.join(os.path.dirname(workflow.snakefile), "config.yaml"), component_file_name) #this creates the component's yaml file by copying the main config.yaml content into it
-db_component = datahandling.load_component(component_file_name) #This function will create the component object as yaml and python dict
-
-sample_component_file_name = db_sample["name"] + "__" + component + ".yaml"
-db_sample_component = datahandling.load_sample_component(sample_component_file_name) #This will create the sample component object as yaml and python dict
-
-if "reads" in db_sample:
-    reads = R1, R2 = db_sample["reads"]["R1"], db_sample["reads"]["R2"]
-else:
-    reads = R1, R2 = ("/dev/null", "/dev/null")
-
-onsuccess:
-    print("Workflow complete")
-    datahandling.update_sample_component_success(db_sample.get("name", "ERROR") + "__" + component + ".yaml", component)
 
 
 onerror:
@@ -78,7 +54,9 @@ rule check_requirements:
         sample_component = sample_component_file_name
     run:
         check_requirements.script__initialization(input.requirements_file, params.component, params.sample, params.sample_component, output, log.out_file, log.err_file)
+#- Templated section: end --------------------------------------------------------------------------
 
+#* Dynamic section: start **************************************************************************
 
 rule_name = "pointfinder"
 rule pointfinder:
