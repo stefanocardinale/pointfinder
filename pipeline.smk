@@ -12,48 +12,40 @@ pointfinder_db_names = {'Salmonella enterica': 'salmonella','Campylobacter jejun
 
 
 onerror:
-    print("Workflow error")
-    datahandling.update_sample_component_failure(db_sample.get("name", "ERROR") + "__" + component + ".yaml", component)
+    bifrost_sampleComponentObj.failure()
 
 
 rule all:
     input:
-        component + "/" + component + "_complete"
+        # file is defined by datadump function
+        component_name + "/datadump_complete"
 
 
 rule setup:
     output:
-        init_file = touch(temp(component + "/" + component + "_initialized")),
+        init_file = touch(
+            temp(component_name + "/initialized")),
     params:
-        folder = component
+        folder = component_name
 
 
 rule_name = "check_requirements"
 rule check_requirements:
-    # Static
     message:
         "Running step:" + rule_name
-    threads:
-        global_threads
-    resources:
-        memory_in_GB = global_memory_in_GB
     log:
-        out_file = rules.setup.params.folder + "/log/" + rule_name + ".out.log",
-        err_file = rules.setup.params.folder + "/log/" + rule_name + ".err.log",
+        out_file = component_name + "/log/" + rule_name + ".out.log",
+        err_file = component_name + "/log/" + rule_name + ".err.log",
     benchmark:
-        rules.setup.params.folder + "/benchmarks/" + rule_name + ".benchmark"
-    # Dynamic
+        component_name + "/benchmarks/" + rule_name + ".benchmark"
     input:
         folder = rules.setup.output.init_file,
-        requirements_file = component_file_name
     output:
-        check_file = rules.setup.params.folder + "/requirements_met"
+        check_file = component_name + "/requirements_met",
     params:
-        component = component_file_name,
-        sample = sample,
-        sample_component = sample_component_file_name
+        bifrost_sampleComponentObj
     run:
-        check_requirements.script__initialization(input.requirements_file, params.component, params.sample, params.sample_component, output, log.out_file, log.err_file)
+        bifrost_sampleComponentObj.check_requirements()
 #- Templated section: end --------------------------------------------------------------------------
 
 #* Dynamic section: start **************************************************************************
@@ -111,9 +103,8 @@ rule datadump_pointfinder:
     input:
         rules.pointfinder.output.outfile
     output:
-        summary = touch(rules.all.input)
+        complete = rules.all.input
     params:
-        sample = db_sample.get("name", "ERROR") + "__" + component + ".yaml",
-        folder = rules.setup.params.folder,
+        sampleComponentObj = bifrost_sampleComponentObj
     script:
         os.path.join(os.path.dirname(workflow.snakefile), "datadump.py")
