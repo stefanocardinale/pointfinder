@@ -1,20 +1,30 @@
 #-Information---------------------------------------------------------------------------------------
 name: pointfinder
-version: 1.0
-target: sample
-type: pipeline
-recommendation: optional
-description: >
-  Uses pointfinder and blastn to detect point mutations that result in antimicrobial resistance. 
+version: 2.1
+#---------------------------------------------------------------------------------------------------
+
+#-Details-------------------------------------------------------------------------------------------
+details:
+  category: resistance
+  schema_version: 2.0
+  target: sample
+  type: pipeline
+  recommendation: recommended
+  description: >
+    Finds chromosomal point mutations with the CGE pointfinder tool
+#---------------------------------------------------------------------------------------------------
+
+#-Docker location-----------------------------------------------------------------------------------
+dockerfile: &dockerfile "docker://stefanocardinale/pointfinder:2.1"
 #---------------------------------------------------------------------------------------------------
 
 #-Options-------------------------------------------------------------------------------------------
-#assembly_with: "skesa"  # Choices: skesa|spades
+options:
 #---------------------------------------------------------------------------------------------------
 
 #-Required resource files---------------------------------------------------------------------------
-# Relative files are relative to this components folder if not using an absolute path
-#adapters_fasta: "resources/adapters.fasta"
+resources:
+  database_path: "/bifrost_resources/pointfinder_db/"
 #---------------------------------------------------------------------------------------------------
 
 #-Requirements to run component---------------------------------------------------------------------
@@ -27,11 +37,32 @@ requirements:
   #this requirement looks directly at the sample object 'reads' dictionary at R1 and R2 keys.
   #It only checks whether there are there (initialized), it doesn't care about their value
   sample:
-    reads:
-      R1:
-      R2:
     properties:
       provided_species: ['Escherichia coli', 'Salmonella enterica','Campylobacter jejuni']
+#---------------------------------------------------------------------------------------------------
+
 #-DB Value changes (excluding component output)-----------------------------------------------------
-# None
+db_values_changes:
+  files:
+  sample:
+    properties:
+      resistance:
+        summary: 
+        component:
+          _id: 
+          date: "ObjectId"
+    report:
+      resistance:
+        title: Resistance
+        info: *dockerfile
+        columns:  # headers, these values are statically present in datadump
+          - {id: "Residue", name: "Amino acid change"}
+          - {id: "Mutation", name: "Mutation"}
+          - {id: "Nucleotide", name: "Nucleotide change"}
+          - {id: "PMID", name: "PMID"}
+          - {id: "Resistance", name: "Resistance"}
+        data: []  # list of dicts parsed in datadump
+  sample_component:
+    summary:
+    results:
 #---------------------------------------------------------------------------------------------------

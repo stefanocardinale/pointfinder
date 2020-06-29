@@ -2,7 +2,7 @@
 FROM ssidk/bifrost-base:2.0.5
 
 #- These are variables that are used at build-time--------------------------------------------------
-ARG version="1.0"
+ARG version="2.1"
 ARG last_updated="21/06/2021"
 ARG name="pointfinder"
 ARG full_name="${name}"
@@ -13,7 +13,7 @@ LABEL \
     description="Docker environment for ${full_name}" \
     version=${version} \
     resource_version=${last_updated} \
-    maintainer="kimn@ssi.dk;"
+    maintainer="stca@ssi.dk;"
 
 #- Tools to install:start---------------------------------------------------------------------------
 RUN \
