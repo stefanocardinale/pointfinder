@@ -10,8 +10,7 @@ import glob
 def parse_args(org_names):
 	parser = argparse.ArgumentParser(
 		description="Finds information on the point mutation positions.")
-	parser.add_argument("--organism", help="Sets a specific organism", choices=org_names,
-						required=True)
+	parser.add_argument("--organism", help="Sets a specific organism", choices=org_names)
 	parser.add_argument("--id", help="Id to use for same-folder running", required=True)
 	parser.add_argument("--db", help="Path to db", required=True)
 	parser.add_argument("--i", "--inputfasta", help="Input fasta file")

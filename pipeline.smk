@@ -8,8 +8,6 @@ bifrost_sampleComponentObj = datahandling.SampleComponentObj(config["sample_id"]
 sample_name, component_name, dockerfile, options, bifrost_resources = bifrost_sampleComponentObj.load()
 bifrost_sampleComponentObj.started()
 
-pointfinder_db_names = {'Salmonella enterica': 'salmonella','Campylobacter jejuni': 'campylobacter','Escherichia coli': 'escherichia_coli'} #with this I provide a specific new value used after in the script to look at the specific organism in the database (resources)
-
 
 onerror:
     bifrost_sampleComponentObj.failure()
@@ -55,10 +53,6 @@ rule pointfinder:
     # Static
     message:
         "Running step:" + rule_name
-    threads:
-        global_threads
-    resources:
-        memory_in_GB = global_memory_in_GB
     shadow:
         "shallow"
     log:
@@ -70,19 +64,18 @@ rule pointfinder:
     input:
         folder = rules.check_requirements.output.check_file,
         reads = (R1, R2),
-        contigs = db_sample['path'] + "/qcquickie/contigs.fasta"
+        contigs = rules.setup.params.folder + "/contigs.fasta"
     output:
         outfile = touch(rules.setup.params.folder + "/pointfinder_completed")
         #summary = rules.setup.params.folder + "/summary.tsv",
         #resistance_summary = rules.setup.params.folder + "/resistance_summary.tsv"
     params:
-        sample_name = db_sample.get("name","ERROR"),
-        provided_species = pointfinder_db_names.get(provided_species,"ERROR"),
+        sample_name = sample_name,
         outfolder = rules.setup.params.folder,
         db = os.path.join(os.path.dirname(workflow.snakefile), "resources/pointfinder_db")
 #        adapters = os.path.join(os.path.dirname(workflow.snakefile), db_component["adapters_fasta"])
     shell:
-        os.path.join(os.path.dirname(workflow.snakefile), "scripts/pointfinder.py") + " --id {params.sample_name} --db {params.db} --i {input.contigs} --o {params.outfolder} --organism {params.provided_species}"
+        os.path.join(os.path.dirname(workflow.snakefile), "scripts/pointfinder.py") + " --id {params.sample_name} --db {params.db} --i {input.contigs} --o {params.outfolder}"
 
 
 rule_name = "datadump_pointfinder"
@@ -90,10 +83,6 @@ rule datadump_pointfinder:
     # Static
     message:
         "Running step:" + rule_name
-    threads:
-        global_threads
-    resources:
-        memory_in_GB = global_memory_in_GB
     log:
         out_file = rules.setup.params.folder + "/log/" + rule_name + ".out.log",
         err_file = rules.setup.params.folder + "/log/" + rule_name + ".err.log",
