@@ -19,10 +19,8 @@ def parse_args(org_names):
 
 def run_pointfinder(fasta, seqid, db, outdir, organism):
 	#sp.run(["cd", seqid])
-	sp.run(["mkdir", outdir])
 	sp.run(["/Users/stefanocardinale/Documents/SSI/git.repositories3/pointfinder/PointFinder.py",
-	 "-i", fasta, "-o", outdir, "-s", organism, "-p", db, "-m", "blastn",
-	"-m_p", "/Users/stefanocardinale/opt/anaconda3/envs/bifrost/bin/blastn"])
+	 "-i", fasta, "-o", outdir, "-s", organism, "-p", db, "-m", "blastn", "-m_p", "/opt/conda/pkgs/blast-2.9.0-h20b68b9_1/bin/blastn"])
 
 
 def find_contigs(seqid, fasta):

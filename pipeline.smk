@@ -64,7 +64,7 @@ rule pointfinder:
     input:
         folder = rules.check_requirements.output.check_file,
         #reads = bifrost_sampleComponentObj.get_reads()
-        #contigs = rules.setup.params.folder + "/contigs.fasta"
+        contigs = "qcquickie/contigs.fasta"
     output:
         outfile = touch(rules.setup.params.folder + "/pointfinder_completed")
         #summary = rules.setup.params.folder + "/summary.tsv",
