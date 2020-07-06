@@ -1,6 +1,6 @@
 #-Information---------------------------------------------------------------------------------------
 name: pointfinder
-version: 2.2.9
+version: 2.3.1
 #---------------------------------------------------------------------------------------------------
 
 #-Details-------------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ details:
 #---------------------------------------------------------------------------------------------------
 
 #-Docker location-----------------------------------------------------------------------------------
-dockerfile: &dockerfile "docker://stefanocardinale/pointfinder:2.2.9"
+dockerfile: &dockerfile "docker://stefanocardinale/pointfinder:2.3.1"
 #---------------------------------------------------------------------------------------------------
 
 #-Options-------------------------------------------------------------------------------------------
@@ -31,14 +31,12 @@ resources:
 requirements:
 #this requirement looks for the specific sample component with name 'assemblatron' and the key 'status' 
 #checking the provided value
-  component: 
-    qcquickie:
-      status: Success
   #this requirement looks directly at the sample object 'reads' dictionary at R1 and R2 keys.
   #It only checks whether there are there (initialized), it doesn't care about their value
   sample:
     properties:
-      provided_species: ['Escherichia coli', 'Salmonella enterica','Campylobacter jejuni']
+      #provided_species: ['Escherichia coli', 'Salmonella enterica','Campylobacter jejuni']
+      denovo_assembly:
 #---------------------------------------------------------------------------------------------------
 
 #-DB Value changes (excluding component output)-----------------------------------------------------

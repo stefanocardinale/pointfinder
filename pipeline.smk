@@ -63,8 +63,8 @@ rule pointfinder:
     # Dynamic
     input:
         folder = rules.check_requirements.output.check_file,
-        reads = (R1, R2),
-        contigs = rules.setup.params.folder + "/contigs.fasta"
+        #reads = bifrost_sampleComponentObj.get_reads()
+        #contigs = rules.setup.params.folder + "/contigs.fasta"
     output:
         outfile = touch(rules.setup.params.folder + "/pointfinder_completed")
         #summary = rules.setup.params.folder + "/summary.tsv",
