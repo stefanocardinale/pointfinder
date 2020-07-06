@@ -2,7 +2,7 @@
 FROM ssidk/bifrost-base:2.0.5
 
 #- These are variables that are used at build-time--------------------------------------------------
-ARG version="v2.3.5"
+ARG version="v2.3.6"
 ARG last_updated="07/07/2020"
 ARG name="pointfinder"
 ARG full_name="${name}"
@@ -28,7 +28,7 @@ RUN cd /bifrost_resources && \
 
 #- Source code:start -------------------------------------------------------------------------------
 RUN cd /bifrost && \
-    git clone --branch ${version} https://github.com/stefanocardinale/${full_name}.git ${name};
+    git clone --branch ${version} --recurse-submodules https://github.com/stefanocardinale/${full_name}.git ${name};
 #- Source code:end ---------------------------------------------------------------------------------
 
 #- Set up entry point:start ------------------------------------------------------------------------
