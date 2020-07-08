@@ -1,6 +1,6 @@
 #-Information---------------------------------------------------------------------------------------
 name: pointfinder
-version: 2.3.1
+version: 2.3.9
 #---------------------------------------------------------------------------------------------------
 
 #-Details-------------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ details:
 #---------------------------------------------------------------------------------------------------
 
 #-Docker location-----------------------------------------------------------------------------------
-dockerfile: &dockerfile "docker://stefanocardinale/pointfinder:2.3.1"
+dockerfile: &dockerfile "docker://stefanocardinale/pointfinder:2.3.9"
 #---------------------------------------------------------------------------------------------------
 
 #-Options-------------------------------------------------------------------------------------------
@@ -29,25 +29,22 @@ resources:
 
 #-Requirements to run component---------------------------------------------------------------------
 requirements:
-#this requirement looks for the specific sample component with name 'assemblatron' and the key 'status' 
-#checking the provided value
-  #this requirement looks directly at the sample object 'reads' dictionary at R1 and R2 keys.
-  #It only checks whether there are there (initialized), it doesn't care about their value
   sample:
     properties:
-      #provided_species: ['Escherichia coli', 'Salmonella enterica','Campylobacter jejuni']
-      denovo_assembly:
+      paired_reads:
+        summary:
+          data:
 #---------------------------------------------------------------------------------------------------
 
 #-DB Value changes (excluding component output)-----------------------------------------------------
 db_values_changes:
-  files:
+  files: []
   sample:
     properties:
       resistance:
         summary: 
         component:
-          _id: 
+          _id:
           date: "ObjectId"
     report:
       resistance:
@@ -61,6 +58,8 @@ db_values_changes:
           - {id: "Resistance", name: "Resistance"}
         data: []  # list of dicts parsed in datadump
   sample_component:
-    summary:
+    properties:
+      summary: {}
     results:
+      pointfinder/contigs_blastn_results.tsv: {}
 #---------------------------------------------------------------------------------------------------

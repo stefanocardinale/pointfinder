@@ -17,13 +17,16 @@ LABEL \
 
 #- Tools to install:start---------------------------------------------------------------------------
 RUN \
-    conda install -yq -c conda-forge -c bioconda -c default blast;
+    conda install -yq -c default -c bioconda -c conda-forge blast; \
+    conda install -yq -c default -c bioconda -c conda-forge biopython; \
+    pip install cgecore
 #- Tools to install:end ----------------------------------------------------------------------------
 
 #- Additional resources (files/DBs): start ---------------------------------------------------------
 RUN cd /bifrost_resources && \
     wget -q https://raw.githubusercontent.com/ssi-dk/bifrost/master/setup/adapters.fasta && \
-    chmod +r adapters.fasta
+    chmod +r adapters.fasta && \
+    git clone https://git@bitbucket.org/genomicepidemiology/pointfinder.git
 #- Additional resources (files/DBs): end -----------------------------------------------------------
 
 #- Source code:start -------------------------------------------------------------------------------
