@@ -4,13 +4,9 @@ from bifrostlib import datahandling
 
 
 os.umask(0o2)
-bifrost_sampleComponentObj = datahandling.SampleComponentObj(config["sample_id"], config["component_id"])
+bifrost_sampleComponentObj = datahandling.SampleComponentObj(config["sample_id"], config["component_id"], path=os.getcwd())
 sample_name, component_name, dockerfile, options, bifrost_resources = bifrost_sampleComponentObj.load()
 provided_species = bifrost_sampleComponentObj.get_sample_properties_by_category("sample_info")['provided_species']
-
-print(provided_species)
-#ifrost_sample = datahandling.Sample(config["sample_id"])
-#provided_specie = bifrost_sample.load()
 
 pointfinder_db = {'Salmonella enterica': 'salmonella', 'Campylobacter jejuni': 'campylobacter', "E.coli": "escherichia_coli"}
 
