@@ -2,9 +2,9 @@ from bifrostlib import datahandling
 
 def extract_cge_pointfinder_report(sampleComponentObj):
     import pandas
-    summary, results, file_path, key = sampleComponentObj.start_data_extraction("contigs_blastn_results.tsv")
+    summary, results, file_path, key = sampleComponentObj.start_data_extraction("resistance/contigs_blastn_results.tsv")
 
-    df = pandas.read_csv("/S90/pointfinder/contigs_blastn_results.tsv", sep="\t")
+    df = pandas.read_csv(file_path, sep="\t")
     if df.shape[0] > 0:
         # These are all the columns which will be included in the final dataframe except for the collapsed column
         grouped_df = df.groupby(["Mutation","Resistance","Nucleotide change","Amino acid change"])
