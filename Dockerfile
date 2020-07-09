@@ -2,7 +2,7 @@
 FROM ssidk/bifrost-base:2.0.5
 
 #- These are variables that are used at build-time--------------------------------------------------
-ARG version="v2.3.11"
+ARG version="v2.3.13"
 ARG last_updated="10/07/2020"
 ARG name="pointfinder"
 ARG full_name="${name}"
