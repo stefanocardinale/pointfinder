@@ -1,6 +1,6 @@
 #-Information---------------------------------------------------------------------------------------
 name: pointfinder
-version: 2.3.15
+version: 2.3.16
 #---------------------------------------------------------------------------------------------------
 
 #-Details-------------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ details:
 #---------------------------------------------------------------------------------------------------
 
 #-Docker location-----------------------------------------------------------------------------------
-dockerfile: &dockerfile "docker://stefanocardinale/pointfinder:2.3.15"
+dockerfile: &dockerfile "docker://stefanocardinale/pointfinder:2.3.16"
 #---------------------------------------------------------------------------------------------------
 
 #-Options-------------------------------------------------------------------------------------------
@@ -40,8 +40,8 @@ requirements:
 #-DB Value changes (excluding component output)-----------------------------------------------------
 db_values_changes:
   files:
-   - "cge_pointfinder/contigs_blastn_results.tsv"
-   - "cge_pointfinder/contigs.fasta"
+   - "pointfinder/contigs_blastn_results.tsv"
+   - "pointfinder/contigs.fasta"
   sample:
     properties:
       resistance:
@@ -54,5 +54,5 @@ db_values_changes:
   sample_component:
     summary:
     results:
-      cge_pointfinder/contigs_blastn_results.tsv: {}
+      pointfinder/contigs_blastn_results.tsv: {}
 #---------------------------------------------------------------------------------------------------
