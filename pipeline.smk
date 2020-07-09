@@ -129,8 +129,8 @@ rule cge_pointfinder:
         contigs = rules.assembly__quick_assembly_with_tadpole.output
     output:
         #complete = rules.setup.params.folder + "/data_pointfinder.json",
-        #outfile = touch(rules.setup.params.folder + "/pointfinder_completed")
-        summary = touch(rules.all.input)
+        outfile = touch(rules.setup.params.folder + "/pointfinder_completed")
+        #summary = touch(rules.all.input)
     params:
         outfolder = rules.setup.params.folder,
         sampleComponentObj = bifrost_sampleComponentObj,
@@ -139,7 +139,7 @@ rule cge_pointfinder:
         os.path.join(os.path.dirname(workflow.snakefile), "scripts/rule__cge_pointfinder.py")
 #* Dynamic section: end ****************************************************************************
 
-""" rule_name = "datadump_pointfinder"
+rule_name = "datadump_pointfinder"
 rule datadump_pointfinder:
     # Static
     message:
@@ -157,5 +157,5 @@ rule datadump_pointfinder:
     params:
         sampleComponentObj = bifrost_sampleComponentObj
     script:
-        os.path.join(os.path.dirname(workflow.snakefile), "datadump.py") """
+        os.path.join(os.path.dirname(workflow.snakefile), "datadump.py")
 #- Templated section: end --------------------------------------------------------------------------
