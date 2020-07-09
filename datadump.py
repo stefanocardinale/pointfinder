@@ -2,7 +2,7 @@ from bifrostlib import datahandling
 
 def extract_cge_pointfinder_report(sampleComponentObj):
     import pandas
-    summary, results, file_path, key = sampleComponentObj.start_data_extraction("resistance/contigs_blastn_results.tsv")
+    summary, results, file_path, key = sampleComponentObj.start_data_extraction("contigs_blastn_results.tsv")
 
     df = pandas.read_csv(file_path, sep="\t")
     if df.shape[0] > 0:
